@@ -1,0 +1,19 @@
+﻿<Properties StartupConfiguration="{6E1E53D6-9CF6-4B43-96E2-4DBEA4BD5486}|Default">
+  <MonoDevelop.Ide.ItemProperties.iCombatATM.Android PreferredExecutionTarget="Android.127.0.0.1:62001" />
+  <MonoDevelop.Ide.Workbench>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="iCombatATM" expanded="True" selected="True" />
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.ItemProperties.iCombatATM.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.957D0E73-7585-4A91-9D2A-23E8F7785171" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|iPhoneSimulator" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>

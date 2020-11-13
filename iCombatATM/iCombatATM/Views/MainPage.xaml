@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="iCombatATM.MainPage">
+
+    <StackLayout>
+        <Frame BackgroundColor="Black" Padding="24" CornerRadius="0">
+            <Label Text="Welcome to iCombat ATM" HorizontalTextAlignment="Center" TextColor="White" FontSize="36"/>
+        </Frame>
+
+      
+        <CollectionView ItemsSource="{Binding Bills,Mode=TwoWay}"  HeightRequest="250" >
+            <CollectionView.Header>
+                <Grid >
+                    <Grid.ColumnDefinitions >
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <BoxView Grid.Column="0" Grid.ColumnSpan="4" Color="#972B36"></BoxView>
+                    <Label Grid.Column="1" Margin="-10,0,0,0" FontAttributes="Bold" Text="Amount"></Label>
+                    <Label Grid.Column="3" Margin="-50,0,0,0" FontAttributes="Bold" Text="Quantity of bills"></Label>
+                </Grid>
+            </CollectionView.Header>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid >
+                        <Grid.ColumnDefinitions >
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                         </Grid.ColumnDefinitions>
+                            
+                        <Label Grid.Column="1"  Text="$"></Label>
+                        <Label Grid.Column="1" Margin="15,0,0,0"   Text="{Binding BillValue}"></Label>
+                        <Label Grid.Column="3"   Text="{Binding BillAmounts}"></Label>
+
+                    </Grid>
+
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+            <CollectionView.Footer>
+                <StackLayout Orientation="Horizontal">
+                    <Label  Margin="0,35,0,0" Text="Total Amount Available to Withdraw: $" FontAttributes="Bold"></Label>
+                    <Label  Margin="0,35,0,0" HorizontalOptions="Center" FontAttributes="Bold" Text="{Binding TotalAmount, Mode=TwoWay}"></Label>
+                </StackLayout>
+            </CollectionView.Footer>
+            
+        </CollectionView>
+        
+        <StackLayout Margin="12,0,0,0" HorizontalOptions="Center" Orientation="Horizontal">
+            <Entry WidthRequest="150" Keyboard="Numeric" FontSize="12" Text="{Binding AmountWitdraw, Mode=TwoWay}" Placeholder="Amount to withdraw"></Entry>
+            <Button Text="Withdraw" WidthRequest="100" TextColor="White" Command="{Binding Withdraw}" CornerRadius="16" Margin="3" BackgroundColor="#972B36"></Button>
+            <Button Text="Restock bills" WidthRequest="100" TextColor="White" Command="{Binding Restock}" CornerRadius="16" Margin="3" BackgroundColor="#972B36"></Button>
+
+        </StackLayout>
+        <Button Margin="10,50,10,10" Text="Visit our Website" TextColor="White" Command="{Binding OpenBrowser}" CornerRadius="26"  BackgroundColor="#972B36"></Button>
+    </StackLayout>
+
+</ContentPage>

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "dgSpecHash": "1GmdH5WYr9OIaUIfxwiLBnAWpa4nXqbDuj51+38stjSGM4+wXBg+luJPXe9pJe7vjlqvV3GIwJFa+rmmwCqf+A==",
+  "success": true,
+  "projectFilePath": "/Users/oscarsarabia/Desktop/iCombatATM/iCombatATM.iOS/iCombatATM.iOS.csproj",
+  "expectedPackageFiles": [
+    "/Users/oscarsarabia/.nuget/packages/acr.userdialogs/7.1.0.466/acr.userdialogs.7.1.0.466.nupkg.sha512",
+    "/Users/oscarsarabia/.nuget/packages/btprogresshud/1.3.1/btprogresshud.1.3.1.nupkg.sha512",
+    "/Users/oscarsarabia/.nuget/packages/xamarin.essentials/1.5.3.2/xamarin.essentials.1.5.3.2.nupkg.sha512",
+    "/Users/oscarsarabia/.nuget/packages/xamarin.forms/4.8.0.1451/xamarin.forms.4.8.0.1451.nupkg.sha512"
+  ],
+  "logs": []
+}
