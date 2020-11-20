@@ -4,13 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
-using iCombatATM.Services;
+
 
 namespace iCombatATM.ViewModel
 {
@@ -18,19 +14,46 @@ namespace iCombatATM.ViewModel
     {
 
         #region Properties
-        private ObservableCollection<Bills> bills;
-        private int amountWitdraw;
-        public int AmountWitdraw
+        private ObservableCollection<Bill> _bills;
+        public ObservableCollection<Bill> Bills
         {
-            get => amountWitdraw;
-            set => SetProperty(ref amountWitdraw, value);
+            get => _bills;
+            set => SetProperty(ref _bills, value);
+           
         }
 
-        public ObservableCollection<Bills> Bills
+        private Bill localBill;
+
+        public Bill LocalBill
         {
-                get => bills;
-                set => SetProperty(ref bills, value);
+            get => localBill;
+            set
+            {
+                SetProperty(ref localBill, value);
+                _bills.Add(value);
+
+            }
         }
+
+
+        private int? amountWitdraw;
+        public int? AmountWitdraw
+        {
+            get => amountWitdraw;
+            set  
+            {
+                if (value >= 1 || value is null)
+                {
+                    SetProperty(ref amountWitdraw, value);
+                }
+                else
+                {
+                    UserDialogs.Instance.Alert("Please type an Integer value  greather than 0, not cents or float values.", "Error", "OK");
+                }
+            }
+        }
+
+      
 
         private int totalAmount;
         public int TotalAmount
@@ -55,137 +78,120 @@ namespace iCombatATM.ViewModel
         {
             OpenBrowser = new Command(Navigating);
             Withdraw = new Command(OnWithdraw);
-            Restock = new Command(RestockBills);
-           
-                InitialStockBills();
-
-            
-           
+            Restock = new Command(InitialStockBills);
+            Bills = new ObservableCollection<Bill>();
+            InitialStockBills();
         }
-
-
         #endregion
 
         #region Methods Implementation
 
-        public  void InitialStockBills()
+        private  void InitialStockBills()
         {
-           
-            this.bills = new ObservableCollection<Bills>();
-            Bills bill = new Bills();
-            bill.BillValue = 100;
-            bill.BillAmounts = 10;
-            this.bills.Add(bill);
 
-            bill = new Bills();
-            bill.BillValue = 50;
-            bill.BillAmounts = 10;
-            this.bills.Add(bill);
-
-            bill = new Bills();
-            bill.BillValue = 20;
-            bill.BillAmounts = 10;
-            this.bills.Add(bill);
-
-            bill = new Bills();
-            bill.BillValue = 10;
-            bill.BillAmounts = 10;
-            bills.Add(bill);
-
-            bill = new Bills();
-            bill.BillValue = 5;
-            bill.BillAmounts = 10;
-            bills.Add(bill);
-
-            bill = new Bills();
-            bill.BillValue = 1;
-            bill.BillAmounts = 10;
-            bills.Add(bill);
-            Bills = bills;
-            totalAmount = bills.Sum(x => x.BillAmounts * x.BillValue);
+            Bills.Clear();
+            int[] BillsValues = { 100, 50, 20, 10, 5, 1 };
+            CreateBillStock(BillsValues);
+            TotalAmount = Bills.Sum(x => x.BillAmounts * x.BillValue);
+            AmountWitdraw = null;
         }
 
 
-        public void RestockBills()
+        private void CreateBillStock(int[] Values)
         {
-
-            this.Bills = new ObservableCollection<Bills>();
-            Bills bill = new Bills();
-            bill.BillValue = 100;
-            bill.BillAmounts = 10;
-            this.Bills.Add(bill);
-
-            bill = new Bills();
-            bill.BillValue = 50;
-            bill.BillAmounts = 10;
-            this.Bills.Add(bill);
-
-            bill = new Bills();
-            bill.BillValue = 20;
-            bill.BillAmounts = 10;
-            this.Bills.Add(bill);
-
-            bill = new Bills();
-            bill.BillValue = 10;
-            bill.BillAmounts = 10;
-            Bills.Add(bill);
-
-            bill = new Bills();
-            bill.BillValue = 5;
-            bill.BillAmounts = 10;
-            Bills.Add(bill);
-
-            bill = new Bills();
-            bill.BillValue = 1;
-            bill.BillAmounts = 10;
-            Bills.Add(bill);
-           
-            TotalAmount = Bills.Sum(x => x.BillAmounts * x.BillValue);
+            foreach(int value in Values)
+            {
+                LocalBill = new Bill();
+                LocalBill.BillValue = value;
+                LocalBill.BillAmounts = 10;
+            }
+          
         }
 
 
         public  void OnWithdraw()
         {
-
             try
             {
                 int value1 = Convert.ToInt32(amountWitdraw);//trigger an error if the user type a letter or special character.
-
-                if (amountWitdraw > bills.Sum(x => x.BillAmounts * x.BillValue))
+                if (amountWitdraw > _bills.Sum(x => x.BillAmounts * x.BillValue))
                 {
                     UserDialogs.Instance.Alert("The amount requested is greather than the total of money we have available.", "Failure: insufficient funds", "OK");
                 }
                 else
                 {
-                   if(amountWitdraw>=1)
-                   {
-                        FactoryMethods Calculation = new FactoryMethods(ref bills, amountWitdraw);
-                        if (Calculation.Success)
-                        {
-                            UserDialogs.Instance.Alert("The amount requested has been dispensed:$" + amountWitdraw.ToString(), "Success", "OK");
-                            var results = bills;
-                            Bills = new ObservableCollection<Bills>();
-                            Bills = results;
-                            TotalAmount = results.Sum(x => x.BillAmounts * x.BillValue);
-                            AmountWitdraw = 0;
-                        }
-                        else
-                        {
-                            UserDialogs.Instance.Alert("The amount requested is Lower than than our lowest bill.", "Failure", "OK");
-                        }
-                    }
-                   else
+                    if (WithdrawCalc(amountWitdraw))
                     {
-                        UserDialogs.Instance.Alert("Please type an Integer value  greather than 0, not cents or float values.", "Error", "OK");
+                        UserDialogs.Instance.Alert("The amount requested has been dispensed:$" + amountWitdraw.ToString(), "Success", "OK");
+                        TotalAmount = Bills.Sum(x => x.BillAmounts * x.BillValue);
+                      
                     }
-                }
+                    else
+                    {
+                        UserDialogs.Instance.Alert("The amount requested is Lower than than our lowest bill.", "Failure", "OK");
+                    }
+                 }
 
+                AmountWitdraw = null;
             }
             catch (Exception ex)
             {
                 UserDialogs.Instance.Alert("Please type an Integer value greather than 0, not cents or float values.", "Error", "OK");
             }
+        }
 
+        public bool WithdrawCalc( int? total)
+        {
+            var acum = 0;
+            List<Bill> CalcValues = new List<Bill>();
+           foreach(var element in _bills)
+            {
+                Bill NewValue = new Bill();
+                NewValue.BillAmounts = element.BillAmounts;
+                NewValue.BillValue = element.BillValue;
+                CalcValues.Add(NewValue);
+            }
+
+            bool Success = false;
+            var diff =(int) total;
+            var elements = 0;
+            for (int i = 0; i < _bills.Count; i++)
+            {
+                if (acum == total)
+                {
+                   Success = true;
+                    break;
+                }
+
+                if (CalcValues[i].BillAmounts > 0)
+                {
+                    if ((diff >= CalcValues[i].BillAmounts * CalcValues[i].BillValue))
+                    {
+                        acum = acum + (CalcValues[i].BillAmounts * CalcValues[i].BillValue);
+                        CalcValues[i].BillAmounts = 0;
+                        diff = total.Value - acum;
+                    }
+                    else
+                    {
+                        elements = diff / CalcValues[i].BillValue;
+                        CalcValues[i].BillAmounts -= elements;
+                        acum = acum + (elements * CalcValues[i].BillValue);
+                        diff = total.Value - acum;
+                    }
+                }
+            }
+            if (acum == total)
+            {
+               Success = true;
+               Bills = new ObservableCollection<Bill>();
+               foreach(Bill element in CalcValues)
+               {
+                    Bills.Add(element);
+               }
+            }
+           
+
+            return Success;
 
         }
         public async void Navigating(object obj)

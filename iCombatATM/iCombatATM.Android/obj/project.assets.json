@@ -2006,32 +2006,40 @@
     ]
   },
   "packageFolders": {
-    "/Users/oscarsarabia/.nuget/packages/": {}
+    "C:\\Users\\Oscar Sarabia\\.nuget\\packages\\": {},
+    "C:\\Microsoft\\Xamarin\\NuGet\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/oscarsarabia/Desktop/iCombatATM/iCombatATM.Android/iCombatATM.Android.csproj",
+      "projectUniqueName": "C:\\iCombatTest\\iCombatATM\\iCombatATM.Android\\iCombatATM.Android.csproj",
       "projectName": "iCombatATM.Android",
-      "projectPath": "/Users/oscarsarabia/Desktop/iCombatATM/iCombatATM.Android/iCombatATM.Android.csproj",
-      "packagesPath": "/Users/oscarsarabia/.nuget/packages/",
-      "outputPath": "/Users/oscarsarabia/Desktop/iCombatATM/iCombatATM.Android/obj/",
+      "projectPath": "C:\\iCombatTest\\iCombatATM\\iCombatATM.Android\\iCombatATM.Android.csproj",
+      "packagesPath": "C:\\Users\\Oscar Sarabia\\.nuget\\packages\\",
+      "outputPath": "C:\\iCombatTest\\iCombatATM\\iCombatATM.Android\\obj\\",
       "projectStyle": "PackageReference",
       "skipContentFileWrite": true,
+      "fallbackFolders": [
+        "C:\\Microsoft\\Xamarin\\NuGet\\"
+      ],
       "configFilePaths": [
-        "/Users/oscarsarabia/.config/NuGet/NuGet.Config"
+        "C:\\Users\\Oscar Sarabia\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],
       "originalTargetFrameworks": [
         "monoandroid90"
       ],
       "sources": {
-        "https://api.nuget.org/v3/index.json": {}
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "https://api.nuget.org/v3/index.json": {},
+        "https://nuget.telerik.com/nuget": {}
       },
       "frameworks": {
         "monoandroid90": {
           "projectReferences": {
-            "/Users/oscarsarabia/Desktop/iCombatATM/iCombatATM/iCombatATM.csproj": {
-              "projectPath": "/Users/oscarsarabia/Desktop/iCombatATM/iCombatATM/iCombatATM.csproj"
+            "C:\\iCombatTest\\iCombatATM\\iCombatATM\\iCombatATM.csproj": {
+              "projectPath": "C:\\iCombatTest\\iCombatATM\\iCombatATM\\iCombatATM.csproj"
             }
           }
         }

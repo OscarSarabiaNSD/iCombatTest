@@ -8,8 +8,7 @@
             <Label Text="Welcome to iCombat ATM" HorizontalTextAlignment="Center" TextColor="White" FontSize="36"/>
         </Frame>
 
-      
-        <CollectionView ItemsSource="{Binding Bills,Mode=TwoWay}"  HeightRequest="250" >
+        <CollectionView ItemsSource="{Binding Bills}" ItemsUpdatingScrollMode="KeepItemsInView" HeightRequest="250" >
             <CollectionView.Header>
                 <Grid >
                     <Grid.ColumnDefinitions >
@@ -17,9 +16,9 @@
                         <ColumnDefinition />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    <BoxView Grid.Column="0" Grid.ColumnSpan="4" Color="#972B36"></BoxView>
-                    <Label Grid.Column="1" Margin="-10,0,0,0" FontAttributes="Bold" Text="Amount"></Label>
-                    <Label Grid.Column="3" Margin="-50,0,0,0" FontAttributes="Bold" Text="Quantity of bills"></Label>
+                    <BoxView Grid.Column="0" Grid.ColumnSpan="3" Color="#972B36"></BoxView>
+                    <Label Grid.Column="0" Grid.ColumnSpan="2" HorizontalTextAlignment="Center" FontAttributes="Bold" Text="Bill Amount"></Label>
+                    <Label Grid.Column="2" Margin="-50,0,0,0" FontAttributes="Bold" Text="Bills Availability"></Label>
                 </Grid>
             </CollectionView.Header>
             <CollectionView.ItemTemplate>
@@ -29,30 +28,25 @@
                             <ColumnDefinition />
                             <ColumnDefinition />
                             <ColumnDefinition />
-                         </Grid.ColumnDefinitions>
-                            
-                        <Label Grid.Column="1"  Text="$"></Label>
-                        <Label Grid.Column="1" Margin="15,0,0,0"   Text="{Binding BillValue}"></Label>
-                        <Label Grid.Column="3"   Text="{Binding BillAmounts}"></Label>
-
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0"  HorizontalTextAlignment="Center"  Text="$"></Label>
+                        <Label Grid.Column="0" Margin="15,0,0,0" HorizontalTextAlignment="End"   Text="{Binding BillValue}"></Label>
+                        <Label Grid.Column="2"   Text="{Binding BillAmounts}"></Label>
                     </Grid>
-
                 </DataTemplate>
             </CollectionView.ItemTemplate>
             <CollectionView.Footer>
-                <StackLayout Orientation="Horizontal">
-                    <Label  Margin="0,35,0,0" Text="Total Amount Available to Withdraw: $" FontAttributes="Bold"></Label>
-                    <Label  Margin="0,35,0,0" HorizontalOptions="Center" FontAttributes="Bold" Text="{Binding TotalAmount, Mode=TwoWay}"></Label>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                    <Label  Margin="100,35,0,0" Text="Total Amount Available to Withdraw: $" FontAttributes="Bold"></Label>
+                    <Label  Margin="0,35,0,0" HorizontalOptions="Center" FontAttributes="Bold" Text="{Binding TotalAmount}"></Label>
                 </StackLayout>
             </CollectionView.Footer>
-            
         </CollectionView>
         
-        <StackLayout Margin="12,0,0,0" HorizontalOptions="Center" Orientation="Horizontal">
+        <StackLayout Margin="12,20,0,0" HorizontalOptions="Center" Orientation="Horizontal">
             <Entry WidthRequest="150" Keyboard="Numeric" FontSize="12" Text="{Binding AmountWitdraw, Mode=TwoWay}" Placeholder="Amount to withdraw"></Entry>
-            <Button Text="Withdraw" WidthRequest="100" TextColor="White" Command="{Binding Withdraw}" CornerRadius="16" Margin="3" BackgroundColor="#972B36"></Button>
+            <Button Text="Withdraw" WidthRequest="110" TextColor="White" Command="{Binding Withdraw}" CornerRadius="16" Margin="3" BackgroundColor="#972B36"></Button>
             <Button Text="Restock bills" WidthRequest="100" TextColor="White" Command="{Binding Restock}" CornerRadius="16" Margin="3" BackgroundColor="#972B36"></Button>
-
         </StackLayout>
         <Button Margin="10,50,10,10" Text="Visit our Website" TextColor="White" Command="{Binding OpenBrowser}" CornerRadius="26"  BackgroundColor="#972B36"></Button>
     </StackLayout>
