@@ -13,7 +13,7 @@ namespace iCombatATM.ViewModel
     public class MainViewModel:BaseViewModel
     {
 
-        #region Properties
+    #region Properties
         private ObservableCollection<Bill> _bills;
         public ObservableCollection<Bill> Bills
         {
@@ -22,29 +22,27 @@ namespace iCombatATM.ViewModel
            
         }
 
-        private Bill localBill;
-
+        private Bill _localBill;
         public Bill LocalBill
         {
-            get => localBill;
+            get => _localBill;
             set
             {
-                SetProperty(ref localBill, value);
+                SetProperty(ref _localBill, value);
                 _bills.Add(value);
 
             }
         }
 
-
-        private int? amountWitdraw;
+        private int? _amountWitdraw;
         public int? AmountWitdraw
         {
-            get => amountWitdraw;
+            get => _amountWitdraw;
             set  
             {
                 if (value >= 1 || value is null)
                 {
-                    SetProperty(ref amountWitdraw, value);
+                    SetProperty(ref _amountWitdraw, value);
                 }
                 else
                 {
@@ -53,27 +51,21 @@ namespace iCombatATM.ViewModel
             }
         }
 
-      
-
-        private int totalAmount;
+        private int _totalAmount;
         public int TotalAmount
         {
-            get => totalAmount;
-            set => SetProperty(ref totalAmount, value);
+            get => _totalAmount;
+            set => SetProperty(ref _totalAmount, value);
         }
-
-
     #endregion
 
-        #region Command definitions
+    #region Command definitions
         public Command OpenBrowser { get; }
         public Command Restock { get; }
         public Command Withdraw { get; }
-
-
     #endregion
 
-        #region Class Constructor
+    #region Class Constructor
         public MainViewModel()
         {
             OpenBrowser = new Command(Navigating);
@@ -82,9 +74,9 @@ namespace iCombatATM.ViewModel
             Bills = new ObservableCollection<Bill>();
             InitialStockBills();
         }
-        #endregion
+    #endregion
 
-        #region Methods Implementation
+    #region Methods Implementation
 
         private  void InitialStockBills()
         {
@@ -105,38 +97,37 @@ namespace iCombatATM.ViewModel
                 LocalBill.BillValue = value;
                 LocalBill.BillAmounts = 10;
             }
-          
         }
-
 
         public  void OnWithdraw()
         {
             try
             {
-                int value1 = Convert.ToInt32(amountWitdraw);//trigger an error if the user type a letter or special character.
-                if (amountWitdraw > _bills.Sum(x => x.BillAmounts * x.BillValue))
+                int value1 = Convert.ToInt32(_amountWitdraw);//trigger an error if the user type a letter or special character.
+                if (_amountWitdraw > _bills.Sum(x => x.BillAmounts * x.BillValue))
                 {
                     UserDialogs.Instance.Alert("The amount requested is greather than the total of money we have available.", "Failure: insufficient funds", "OK");
                 }
                 else
                 {
-                    if (WithdrawCalc(amountWitdraw))
+                    if (WithdrawCalc(_amountWitdraw))
                     {
-                        UserDialogs.Instance.Alert("The amount requested has been dispensed:$" + amountWitdraw.ToString(), "Success", "OK");
+                        UserDialogs.Instance.Alert("The amount requested has been dispensed:$" + _amountWitdraw.ToString(), "Success", "OK");
                         TotalAmount = Bills.Sum(x => x.BillAmounts * x.BillValue);
-                      
                     }
                     else
                     {
                         UserDialogs.Instance.Alert("The amount requested is Lower than than our lowest bill.", "Failure", "OK");
                     }
                  }
-
-                AmountWitdraw = null;
             }
             catch (Exception ex)
             {
                 UserDialogs.Instance.Alert("Please type an Integer value greather than 0, not cents or float values.", "Error", "OK");
+            }
+            finally
+            {
+                AmountWitdraw = null;
             }
         }
 
@@ -144,13 +135,13 @@ namespace iCombatATM.ViewModel
         {
             var acum = 0;
             List<Bill> CalcValues = new List<Bill>();
-           foreach(var element in _bills)
-            {
-                Bill NewValue = new Bill();
-                NewValue.BillAmounts = element.BillAmounts;
-                NewValue.BillValue = element.BillValue;
-                CalcValues.Add(NewValue);
-            }
+            foreach(var element in _bills)
+                {
+                    Bill NewValue = new Bill();
+                    NewValue.BillAmounts = element.BillAmounts;
+                    NewValue.BillValue = element.BillValue;
+                    CalcValues.Add(NewValue);
+                }
 
             bool Success = false;
             var diff =(int) total;
@@ -183,7 +174,7 @@ namespace iCombatATM.ViewModel
             if (acum == total)
             {
                Success = true;
-               Bills = new ObservableCollection<Bill>();
+               Bills.Clear();
                foreach(Bill element in CalcValues)
                {
                     Bills.Add(element);
@@ -194,6 +185,7 @@ namespace iCombatATM.ViewModel
             return Success;
 
         }
+
         public async void Navigating(object obj)
         {
             try
@@ -205,7 +197,7 @@ namespace iCombatATM.ViewModel
                 // An unexpected error occured. No browser may be installed on the device.
             }
         }
-        #endregion
+    #endregion
 
     }
 }
